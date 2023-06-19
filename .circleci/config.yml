@@ -140,7 +140,7 @@ workflows:
     jobs:
       - build-frontend
       - check-dockerfile-format:
-          requires: [build-packages]
+          requires: [build-frontend]
       - create-ecr
       - build-docker-image:
           requires: [create-ecr, check-dockerfile-format]
