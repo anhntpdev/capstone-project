@@ -47,7 +47,7 @@ jobs:
             - run:
                 name: Build docker container
                 command: |
-                    docker build -t anhntp/capstone-app
+                    docker build -t anhntp/capstone-app .
                     docker images
 
     upload-docker:
