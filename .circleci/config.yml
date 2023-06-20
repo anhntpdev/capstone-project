@@ -29,13 +29,12 @@ jobs:
                     . venv/bin/activate
                     make lint 
 
-
     build-docker-image:
         docker:
             # Use the same Docker base as the project 
             - image: docker:17.05.0-ce-git
         
-        working_directory: ~/repo
+        working_directory: ~/capstoneRepo
 
         steps:
             - checkout
@@ -55,8 +54,7 @@ jobs:
         docker:
           - image: docker:17.05.0-ce-git
     
-        working_directory: ~/repo
-    
+        working_directory: ~/capstoneRepo
         steps:
           - checkout
     
@@ -90,8 +88,8 @@ workflows:
   default:
     jobs:
       - check-dockerfile-format     
-      # - build-docker-image:
-      #       requires: [lint]
+      - build-docker-image:
+            requires: [lint]
       # - upload-docker:
       #       requires: [build-docker-image]
       # - deploy:
