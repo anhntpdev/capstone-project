@@ -8,6 +8,6 @@ FROM nginx:stable-alpine3.17
 COPY build /usr/share/nginx/html
 
 ## Step 4:
-EXPOSE 8080
+EXPOSE 80
 ## Step 5:
 # Run app.py at container launch

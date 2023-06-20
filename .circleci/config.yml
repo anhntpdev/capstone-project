@@ -28,7 +28,7 @@ jobs:
     check-dockerfile-format:
         docker:
             # Use the same Docker base as the project 
-            - image: python:3.7.3-stretch
+            - image: 3.7.11-stretch
 
         working_directory: ~/lint
 
