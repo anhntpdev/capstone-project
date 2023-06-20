@@ -43,7 +43,7 @@ jobs:
     build-docker-image:
       docker:
         - image: docker:cli
-      working_directory: ~/capstoneapp
+      working_directory: ~/repo
       parameters:
         workflow_id:
           type: string
@@ -65,13 +65,13 @@ jobs:
             command: |
               account_id=$(aws sts get-caller-identity --query 'Account' --output text)
               app_name=capstoneapp
-              repo=$(aws cloudformation --region us-east-1 describe-stacks --stack-name "capstoneapp" --query 'Stacks[0].Outputs[?OutputKey==`RepositoryUri`].OutputValue' --output text)
+              repo=$(aws cloudformation --region us-east-1 describe-stacks --stack-name ${app_name} --query 'Stacks[0].Outputs[?OutputKey==`RepositoryUri`].OutputValue' --output text)
               # Login ECR
               aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${account_id}.dkr.ecr.us-east-1.amazonaws.com
               # Add tags for that image
-              docker tag ${app_name}:<< parameters.workflow_id >> ${account_id}.dkr.ecr.us-east-1.amazonaws.com/capstoneapp:<< parameters.workflow_id >>
+              docker tag ${app_name}:<< parameters.workflow_id >> ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${app_name}:<< parameters.workflow_id >>
               # Push docker image to ECR
-              docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/capstoneapp:<< parameters.workflow_id >>
+              docker push ${account_id}.dkr.ecr.us-east-1.amazonaws.com/${app_name}:<< parameters.workflow_id >>
 
     deploy-application:
       docker:
@@ -105,8 +105,8 @@ jobs:
                 cat capstone-deploy.yaml |\
                   sed "s|DOCKER_IMAGE_NAME|${docker_image_name}|\
                     g;s|VERSION_INFO_VALUE|<< parameters.workflow_id >>|g" > capstone-deployment.yaml
-                # echo "helloworld-deployment:$(cat helloworld-deployment.yaml)"
-                # echo "workflow_id:<< parameters.workflow_id >>"
+                echo "capstone-deployment:$(cat capstone-deployment.yaml)"
+                echo "workflow_id:<< parameters.workflow_id >>"
                 
                 eksctl create cluster -f eks-config.yml || eksctl upgrade cluster -f eks-config.yml --approve
                 aws eks update-kubeconfig --name capstoneapp --region us-east-1
