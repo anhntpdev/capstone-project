@@ -57,7 +57,7 @@ jobs:
             aws cloudformation deploy \
               --template-file .circleci/files/ecr.yml \
               --tags project=capstoneApp \
-              --stack-name "capstoneApp-frontend"\
+              --stack-name "capstoneApp"
   build-docker-image:
     docker:
       - image: docker:cli
