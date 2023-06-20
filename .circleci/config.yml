@@ -89,7 +89,7 @@ workflows:
     jobs:
       - check-dockerfile-format     
       - build-docker-image:
-            requires: [lint]
+            requires: [check-dockerfile-format]
       # - upload-docker:
       #       requires: [build-docker-image]
       # - deploy:
