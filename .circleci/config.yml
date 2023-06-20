@@ -64,10 +64,10 @@ jobs:
           - run:
               name: Upload Docker to Dockerhub
               command: |
-                # Create dockerpath
-                docker login --username anhntp -p $1
-                echo "Docker ID and Image: anhntp/capstone-app"
-                docker push anhntp/capstone-app
+                dockerpath=anhntp/capstone-app
+                docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
+                echo "Docker ID and Image: $dockerpath"
+                docker push $dockerpath
 
     deploy:
         docker:
