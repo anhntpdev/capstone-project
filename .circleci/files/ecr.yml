@@ -1,10 +1,14 @@
-AWSTemplateFormatVersion: 2010-09-09
-Description: Elastic Container Registory Repository using Cloudformation
+Description:
+  Elastic Container Registry for CapstoneRepo.
 
 Resources:
-  ecrRepo:
+  ECR:
     Type: AWS::ECR::Repository
-    Properties: 
-      RepositoryName: 'CapstoneRepo'
-      ImageScanningConfiguration: 
-        ScanOnPush: true
+    Properties:
+      RepositoryName: "CapstoneRepo"
+      ImageScanningConfiguration:
+          ScanOnPush: true
+
+Outputs:
+  RepositoryUri:
+    Value: !GetAtt ECR.RepositoryUri
