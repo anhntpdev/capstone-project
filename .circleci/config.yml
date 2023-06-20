@@ -56,9 +56,8 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file .circleci/files/ecr.yml \
-              --tags project=capstoneA2pp \
-              --stack-name "capstoneApp"
-  
+              --tags project=capstoneApp \
+              --stack-name "capstoneApp-frontend"\
   build-docker-image:
     docker:
       - image: docker:cli
@@ -141,8 +140,8 @@ workflows:
       - build-frontend
       - check-dockerfile-format:
           requires: [build-frontend]
-      - create-ecr
-      - build-docker-image:
-          requires: [create-ecr, check-dockerfile-format]
-      - deploy-application:
-          requires: [build-docker-image]
+      # - create-ecr
+      # - build-docker-image:
+      #     requires: [create-ecr, check-dockerfile-format]
+      # - deploy-application:
+      #     requires: [build-docker-image]
