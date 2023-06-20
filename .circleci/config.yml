@@ -47,7 +47,7 @@ jobs:
             - run:
                 name: Build docker container
                 command: |
-                    docker build --tag=$DOCKER_IMAGE_NAME . --no-cache
+                    docker build -t anhntp/capstone-app
                     docker images
 
     upload-docker:
@@ -64,10 +64,10 @@ jobs:
           - run:
               name: Upload Docker to Dockerhub
               command: |
-                echo "Docker ID and Image: $DOCKER_IMAGE_NAME"
-                docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
-                docker tag $DOCKER_IMAGE_NAME $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:stable
-                docker push $DOCKERHUB_USERNAME/$DOCKER_IMAGE_NAME:stable
+                # Create dockerpath
+                docker login --username anhntp -p $1
+                echo "Docker ID and Image: anhntp/capstone-app"
+                docker push anhntp/capstone-app
 
     deploy:
         docker:
