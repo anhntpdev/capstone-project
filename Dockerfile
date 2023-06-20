@@ -1,6 +1,6 @@
 FROM python:3.7.3-stretch
 
-ARG APP_FOLDER="capstone_app"
+ARG APP_FOLDER="capstone-app"
 
 ## Step 1:
 # Create a working directory
@@ -13,8 +13,7 @@ COPY /$APP_FOLDER/ /app/
 ## Step 3:
 # Install packages from requirements.txt
 # hadolint ignore=DL3013
-RUN pip install --no-cache-dir --upgrade pip &&\
-    pip install --no-cache-dir --trusted-host pypi.python.org -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 ## Step 4:
 # Expose port 8000
