@@ -28,7 +28,18 @@ jobs:
                 command: |
                     . venv/bin/activate
                     make lint 
-
+    create-ecr:
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run:
+            name: Ensure back-end infrastructure exists
+            command: |
+              aws cloudformation deploy \
+                --template-file .circleci/files/ecr.yml \
+                --tags project=capstoneECR \
+                --stack-name "capstoneECR"
     build-docker-image:
         docker:
             # Use the same Docker base as the project 
@@ -109,9 +120,9 @@ workflows:
   default:
     jobs:
       - check-dockerfile-format     
-      - build-docker-image:
-            requires: [check-dockerfile-format]
-      - upload-docker:
-            requires: [build-docker-image]
-      - deploy-application:
-            requires: [upload-docker]
+      # - build-docker-image:
+      #       requires: [check-dockerfile-format]
+      # - upload-docker:
+      #       requires: [build-docker-image]
+      # - deploy-application:
+      #       requires: [upload-docker]
