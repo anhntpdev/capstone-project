@@ -26,5 +26,6 @@ lint:
 	# See local hadolint install instructions:   https://github.com/hadolint/hadolint
 	# This is linter for Dockerfiles
 	hadolint Dockerfile
+	pylint --disable=R,C,W1203,W1202 $(AppFolder)/app.py
 
 all: install lint test
