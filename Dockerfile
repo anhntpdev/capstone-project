@@ -1,14 +1,12 @@
 FROM python:3.7.3-stretch
 
-ARG APP_FOLDER="capstone-app"
-
 ## Step 1:
 # Create a working directory
 WORKDIR /app
 
 ## Step 2:
 # Copy source code to working directory
-COPY /$APP_FOLDER/ /app/
+COPY app.py .
 
 ## Step 3:
 # Install packages from requirements.txt
