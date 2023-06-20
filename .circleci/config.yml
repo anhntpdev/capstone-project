@@ -47,7 +47,7 @@ jobs:
             - run:
                 name: Build docker container
                 command: |
-                    docker build -t anhntp/capstone-app .
+                    docker build -t anhntp/capstone-app-new-version .
                     docker images
 
     upload-docker:
@@ -64,7 +64,7 @@ jobs:
           - run:
               name: Upload Docker to Dockerhub
               command: |
-                dockerpath=anhntp/capstone-app
+                dockerpath=anhntp/capstone-app-new-version
                 docker login -u="$DOCKERHUB_USERNAME" -p="$DOCKERHUB_PASSWORD"
                 echo "Docker ID and Image: $dockerpath"
                 docker push $dockerpath
@@ -80,7 +80,7 @@ jobs:
           - kubernetes/create-or-update-resource:
               get-rollout-status: true
               resource-file-path: .circleci/files/deployment.yml
-              resource-name: deployment/capstonse-app
+              resource-name: deployment/capstone-app
               show-kubectl-command: true
 
 
