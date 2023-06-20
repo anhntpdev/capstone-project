@@ -1,13 +1,9 @@
-Description: >
-  Elastic Container Registry for capstoneApp.
-
-Resources:
-  ECR:
-    Type: AWS::ECR::Repository
-    Properties:
-      RepositoryName: "capstoneApp"
-      ImageScanningConfiguration:
-          ScanOnPush: true
+MyRepository: 
+  Type: AWS::ECR::Repository
+  Properties: 
+    RepositoryName: "capstoneRepo"
+    ImageScanningConfiguration: 
+      ScanOnPush: true
 
 Outputs:
   RepositoryUri:
