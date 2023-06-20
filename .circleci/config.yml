@@ -119,7 +119,8 @@ jobs:
 workflows:
   default:
     jobs:
-      - check-dockerfile-format     
+      - check-dockerfile-format
+      - create-ecr
       # - build-docker-image:
       #       requires: [check-dockerfile-format]
       # - upload-docker:
