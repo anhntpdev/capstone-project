@@ -2,10 +2,10 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: capstone-deploy
+  name: helloworld-deploy
   labels:
-    name: capstone-deploy
-    app: capstone-app
+    name: helloworld-deploy
+    app: helloworld-app
 spec:
   replicas: 1
   strategy:
@@ -15,17 +15,17 @@ spec:
       maxUnavailable: 1
   selector:
     matchLabels:
-      name: capstone-pod
-      app: capstone-app
+      name: helloworld-pod
+      app: helloworld-app
   template:
     metadata:
-      name: capstone-pod
+      name: helloworld-pod
       labels:
-        name: capstone-pod
-        app: capstone-app
+        name: helloworld-pod
+        app: helloworld-app
     spec:
       containers:
-      - name: capstone
+      - name: helloworld
         image: DOCKER_IMAGE_NAME:VERSION_INFO_VALUE
         resources:
           requests:

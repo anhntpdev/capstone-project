@@ -1,11 +1,11 @@
 Description: >
-  Elastic Container Registry for capstoneapp.
+  Elastic Container Registry for helloworld.
 
 Resources:
   ECR:
     Type: AWS::ECR::Repository
     Properties:
-      RepositoryName: "capstoneapp"
+      RepositoryName: "helloworld"
       ImageScanningConfiguration:
           ScanOnPush: true
 
