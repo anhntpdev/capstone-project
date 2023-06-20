@@ -1,10 +1,10 @@
-MyRepository: 
-  Type: AWS::ECR::Repository
-  Properties: 
-    RepositoryName: "capstoneRepo"
-    ImageScanningConfiguration: 
-      ScanOnPush: true
+AWSTemplateFormatVersion: 2010-09-09
+Description: Elastic Container Registory Repository using Cloudformation
 
-Outputs:
-  RepositoryUri:
-    Value: !GetAtt ECR.RepositoryUri
+Resources:
+  ecrRepo:
+    Type: AWS::ECR::Repository
+    Properties: 
+      RepositoryName: 'CapstoneRepo'
+      ImageScanningConfiguration: 
+        ScanOnPush: true
