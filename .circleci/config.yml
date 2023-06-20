@@ -112,5 +112,5 @@ workflows:
             requires: [check-dockerfile-format]
       - upload-docker:
             requires: [build-docker-image]
-      - deploy:
+      - deploy-application:
             requires: [upload-docker]
