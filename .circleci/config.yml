@@ -58,7 +58,6 @@ jobs:
               --template-file .circleci/files/ecr.yml \
               --tags project=capstoneApp \
               --stack-name "capstoneApp-frontend"\
-              --region us-east-1 \
   build-docker-image:
     docker:
       - image: docker:cli
