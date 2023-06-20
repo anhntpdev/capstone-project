@@ -25,7 +25,7 @@ spec:
         app: helloworld-app
     spec:
       containers:
-      - name: helloworld
+      - name: capstoneapp
         image: DOCKER_IMAGE_NAME:VERSION_INFO_VALUE
         resources:
           requests:
