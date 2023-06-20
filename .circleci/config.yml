@@ -77,10 +77,7 @@ jobs:
           default: ${CIRCLE_WORKFLOW_ID:0:7}
       steps:
         - checkout
-        - run:
-            name: Install kubernetes
-            command: |
-                kubernetes/install-kubectl
+        - kubernetes/install-kubectl
         - deploy:
             name: Deploy application to EKS cluster
             command: |
@@ -88,16 +85,14 @@ jobs:
                 eksctl create cluster -f create-cluster.yml || eksctl upgrade cluster -f create-cluster.yml --approve
                 aws eks update-kubeconfig --region us-east-1 --name capstone-app
 
-                aws-eks/update-kubeconfig-with-authenticator:
-                  cluster-name: capstone-app
+        - aws-eks/update-kubeconfig-with-authenticator:
+                cluster-name: capstone-app
 
-                kubernetes/create-or-update-resource:
-                  get-rollout-status: true
-                  resource-file-path: .circleci/files/deployment.yml
-                  resource-name: deployment/capstone-app
-                  show-kubectl-command: true
-                kubectl get all
-                kubectl get nodes
+        - kubernetes/create-or-update-resource:
+                get-rollout-status: true
+                resource-file-path: .circleci/files/deployment.yml
+                resource-name: deployment/capstone-app
+                show-kubectl-command: true
 
 workflows:
   default:
