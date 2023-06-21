@@ -128,7 +128,7 @@ jobs:
           name: Deploy application to EKS cluster
           command: |
               cd kubernetes
-              Get account name
+              #Get account name
               account_id=$(aws sts get-caller-identity --query 'Account' --output text)
               docker_image_name="${account_id}.dkr.ecr.us-east-1.amazonaws.com/helloworld"
               cat helloworld-deploy.yaml |\
