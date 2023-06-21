@@ -120,7 +120,6 @@ jobs:
               curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp && sudo mv /tmp/eksctl /usr/local/bin
               # Install and configure kubectl
               curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && kubectl version --client
-              # aws-eks/update-kubeconfig-with-authenticator
               # Install and configure kubectl aws-iam-authenticator
               curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.6.2/aws-iam-authenticator_0.6.2_linux_amd64
               chmod +x ./aws-iam-authenticator
@@ -142,13 +141,13 @@ jobs:
               echo "helloworld-deployment:$(cat helloworld-deployment.yaml)"
               echo "workflow_id:<< parameters.workflow_id >>"
               
-              eksctl upgrade cluster -f eks-config.yml --approve
+              eksctl create cluster -f eks-config.yml || eksctl upgrade cluster -f eks-config.yml --approve
               aws eks update-kubeconfig --name helloworld --region us-east-1
               
               # Run kubernetes deployment
-              kubectl apply -f helloworld-deployment.yaml
+              kubectl create -f helloworld-deployment.yaml || kubectl apply -f helloworld-deployment.yaml
               # Run kubernetes service
-              kubectl apply -f helloworld-service.yaml
+              kubectl create -f helloworld-service.yaml || kubectl apply -f helloworld-service.yaml
               
               kubectl get all
               kubectl get nodes
