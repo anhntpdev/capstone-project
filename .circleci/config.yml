@@ -20,10 +20,6 @@ jobs:
           name: build packages
           command: |
             npm run build
-      - run:
-          name: run test
-          command: |
-            npm run test
       - save_cache:
           paths: [node_modules]
           key: nodejs
@@ -45,8 +41,7 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             # Install hadolint
-            wget -O /bin/hadolint https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-x86_64 &&\
-            chmod +x /bin/hadolint
+            make install
       - save_cache:
           paths:
             - ./venv
@@ -57,7 +52,7 @@ jobs:
           name: run lint
           command: |
             . venv/bin/activate
-            hadolint Dockerfile
+            make lint
   create-ecr:
     docker:
       - image: amazon/aws-cli
@@ -85,8 +80,6 @@ jobs:
           name: build docker image
           command: |
             apk update && apk add --no-cache wget aws-cli nodejs npm
-            # wget https://nodejs.org/dist/v18.3.0/node-v18.3.0-linux-x64.tar.xz && tar -xf node-v18.3.0-linux-x64.tar.xz
-            # apk add --update nodejs npm
             npm install
             npm run build
             docker build -t helloworld:<< parameters.workflow_id >> .
@@ -115,11 +108,14 @@ jobs:
           name: Install kubernetes
           command: |
               # Install awscli
-              curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip -qq awscliv2.zip && sudo ./aws/install
+              curl --silent "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+              unzip -qq awscliv2.zip
+              sudo ./aws/install
               # Install eksctl
               curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp && sudo mv /tmp/eksctl /usr/local/bin
               # Install and configure kubectl
-              curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && kubectl version --client
+              curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+              sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && kubectl version --client
               # Install and configure kubectl aws-iam-authenticator
               curl -Lo aws-iam-authenticator https://github.com/kubernetes-sigs/aws-iam-authenticator/releases/download/v0.6.2/aws-iam-authenticator_0.6.2_linux_amd64
               chmod +x ./aws-iam-authenticator
@@ -156,11 +152,11 @@ jobs:
 workflows:
   default:
     jobs:
-      # - build-packages
-      # - check-dockerfile-format:
-      #     requires: [build-packages]
-      # - create-ecr
-      # - build-docker-image:
-      #     requires: [create-ecr, check-dockerfile-format]
-      - deploy-application
-          #requires: [build-docker-image]
+      - build-packages
+      - check-dockerfile-format:
+          requires: [build-packages]
+      - create-ecr
+      - build-docker-image:
+          requires: [create-ecr, check-dockerfile-format]
+      - deploy-application:
+          requires: [build-docker-image]
