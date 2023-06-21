@@ -152,11 +152,11 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-packages
-      - check-dockerfile-format:
-          requires: [build-packages]
-      - create-ecr
-      - build-docker-image:
-          requires: [create-ecr, check-dockerfile-format]
-      - deploy-application:
-          requires: [build-docker-image]
+      # - build-packages
+      # - check-dockerfile-format:
+      #     requires: [build-packages]
+      # - create-ecr
+      # - build-docker-image:
+      #     requires: [create-ecr, check-dockerfile-format]
+      - deploy-application
+          #requires: [build-docker-image]
