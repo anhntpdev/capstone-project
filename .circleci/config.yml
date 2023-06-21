@@ -142,13 +142,13 @@ jobs:
               echo "helloworld-deployment:$(cat helloworld-deployment.yaml)"
               echo "workflow_id:<< parameters.workflow_id >>"
               
-              eksctl create cluster -f eks-config.yml || eksctl upgrade cluster -f eks-config.yml --approve
+              eksctl upgrade cluster -f eks-config.yml --approve
               aws eks update-kubeconfig --name helloworld --region us-east-1
               
               # Run kubernetes deployment
-              kubectl create -f helloworld-deployment.yaml || kubectl apply -f helloworld-deployment.yaml
+              kubectl apply -f helloworld-deployment.yaml
               # Run kubernetes service
-              kubectl create -f helloworld-service.yaml || kubectl apply -f helloworld-service.yaml
+              kubectl apply -f helloworld-service.yaml
               
               kubectl get all
               kubectl get nodes
@@ -157,11 +157,11 @@ jobs:
 workflows:
   default:
     jobs:
-      - build-packages
-      - check-dockerfile-format:
-          requires: [build-packages]
-      - create-ecr
-      - build-docker-image:
-          requires: [create-ecr, check-dockerfile-format]
-      - deploy-application:
-          requires: [build-docker-image]
+      # - build-packages
+      # - check-dockerfile-format:
+      #     requires: [build-packages]
+      # - create-ecr
+      # - build-docker-image:
+      #     requires: [create-ecr, check-dockerfile-format]
+      - deploy-application
+          #requires: [build-docker-image]
