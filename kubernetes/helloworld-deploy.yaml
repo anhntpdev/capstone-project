@@ -27,7 +27,6 @@ spec:
       containers:
       - name: helloworld
         image: DOCKER_IMAGE_NAME:VERSION_INFO_VALUE
-        imagePullPolicy: Never
         resources:
           requests:
             cpu: 100m
